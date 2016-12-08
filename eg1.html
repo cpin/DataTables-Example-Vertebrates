@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DataTables example for charting idea</title>
+        <link rel='stylesheet' href='https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css' type='text/css'/>
+        <link rel='stylesheet' href='vertebrates.css' type='text/css'/>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+        <script src="vertebrates.js"></script>
+    </head>
+<body>
+<h1>Vertebrates</h1>
+
+<div class="tableContainer">
+    <table class="vertebrateTable display compact nowrap"></table>
+</div>
+
+<script>
+    $().ready( function () {
+        setup_table();
+    });
+</script>
+</body>
+</html>

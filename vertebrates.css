@@ -1,0 +1,22 @@
+html {
+    font-family: Helvetica,Arial,sans-serif;
+    color: #555;
+}
+
+.tableContainer {
+    text-align: left;
+    display: inline-block;
+    margin: 20px 50px;
+    padding: 20px;
+    border: solid 1px #999;
+}
+
+.columnSearch {
+    width: 100%;
+}
+
+.vertebrateTable td,
+.vertebrateTable th {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
