@@ -11,6 +11,20 @@ html {
     border: solid 1px #999;
 }
 
+.chartContainer {
+    text-align: left;
+    display: inline-block;
+    margin: 20px 50px;
+    padding: 20px;
+}
+
+.chart {
+    display: inline-block;
+    width: 150px;
+    height: 80px;
+    border: solid 1px #444;
+}
+
 .columnSearch {
     width: 100%;
 }

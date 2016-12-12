@@ -20,9 +20,9 @@ function setup_table ()
                           deferRender:  false,
                           columns:      [
                                             { title: "Species",             class: "dt-left", visible: true, searchable: true },
-                                            { title: "Class",               class: "dt-left", visible: true, searchable: true },
-                                            { title: "Continent",           class: "dt-left", visible: true, searchable: true },
-                                            { title: "Conservation Status", class: "dt-left", visible: true, searchable: true },
+                                            { title: "Class",               class: "dt-left", visible: true, searchable: true, chart: "#classChart" },
+                                            { title: "Continent",           class: "dt-left", visible: true, searchable: true, chart: "#continentChart" },
+                                            { title: "Conservation Status", class: "dt-left", visible: true, searchable: true, chart: "#conservationChart" },
                                         ]
                       });
 

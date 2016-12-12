@@ -6,14 +6,23 @@
         <link rel='stylesheet' href='vertebrates.css' type='text/css'/>
         <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
         <script src="vertebrates.js"></script>
+        <script src="dt-chart.js"></script>
     </head>
 <body>
 <h1>Vertebrates</h1>
 
-<div class="tableContainer">
-    <table class="vertebrateTable display compact nowrap"></table>
-</div>
+
+    <div class="chartContainer">
+        <div class="chart" id="classChart"></div>
+        <div class="chart" id="continentChart"></div>
+        <div class="chart" id="conservationChart"></div>
+    </div>
+    <div class="tableContainer">
+        <table class="vertebrateTable display compact nowrap"></table>
+    </div>
+
 
 <script>
     $().ready( function () {
