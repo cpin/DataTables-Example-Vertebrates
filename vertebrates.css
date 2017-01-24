@@ -3,6 +3,11 @@ html {
     color: #555;
 }
 
+.chartAndTableBin {
+    width: 0px auto;
+    float: left;
+}
+
 .tableContainer {
     text-align: left;
     display: inline-block;
@@ -12,10 +17,16 @@ html {
 }
 
 .chartContainer {
-    text-align: left;
+    width: 80%;
+    margin: 0 auto;
+    text-align: justify;
+}
+
+.stretch {
+    width: 100%;
     display: inline-block;
-    margin: 20px 50px;
-    padding: 20px;
+    font-size: 0;
+    line-height: 0
 }
 
 .chart {
