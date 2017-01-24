@@ -124,43 +124,47 @@ DataTable.chart = {};
 DataTable.chart.version = '0.1.0';
 
 DataTable.chart.redraw = function (dt) {
-    for (var i = 0; i < dt._chart.columns.length; i++) {
-        var col = dt._chart.columns[i];
-        var dataset = makeColumnDataset( dt, col.idx );
+    var ctx = dt.settings()[0]._chart;
+    for (var i = 0; i < ctx.columns.length; i++) {
+        var col = ctx.columns[i];
+        var dataset = makeColumnDataset(dt, col.idx);
         var divElement = $(col.chart);
-        updateChart(divElement, col.sTitle, dataset, dt._chart.meta[col.chart]);
+        updateChart(divElement, col.sTitle, dataset, ctx.meta[col.chart]);
     }
 };
 
-DataTable.chart.init = function (dt) {
+DataTable.chart.init = function (dt, settings) {
     var ctx = dt.settings()[0];
-    var columns = ctx.aoColumns.filter(function (x) {
+
+    ctx._chart = {};
+
+    // Collect references to columns which are charted
+    ctx._chart.columns = ctx.aoColumns.filter(function (x) {
         return x.hasOwnProperty("chart");
     });
 
-    dt._chart = {};
-    dt._chart.columns = columns;
-    dt._chart.meta = {};
-    for (var i = 0; i < dt._chart.columns.length; i++) {
-        var col = dt._chart.columns[i];
+    ctx._chart.meta = {};
+
+    for (var i = 0; i < ctx._chart.columns.length; i++) {
+        var col = ctx._chart.columns[i];
         var elem = $(col.chart);
 
         // Maintain chart meta keyed by selector
-        dt._chart.meta[col.chart] = prepareChartElement(elem);
+        ctx._chart.meta[col.chart] = prepareChartElement(elem);
     }
 
     dt.on('draw.dt', function () {
-        DataTable.chart.redraw( dt );
+        DataTable.chart.redraw(dt);
     });
 };
 
-
-$(document).on('preInit.dt.dtChart', function (e, ctx) {
+$(document).on('preInit.dt.dtChart', function (e, settings, json) {
     if ( e.namespace !== 'dt' ) {
         return;
     }
 
-    DataTable.chart.init(new DataTable.Api(ctx));
+    var dt = new DataTable.Api(settings);
+    DataTable.chart.init(dt);
 });
 
 
