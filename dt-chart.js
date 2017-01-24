@@ -18,7 +18,7 @@ var collate = function(data) {
     }
 
     return {order:order, data:counts};
-}
+};
 
 var makeColumnDataset = function(dt, columnIndex) {
     var original = dt.column(columnIndex).data();
@@ -36,38 +36,56 @@ var makeColumnDataset = function(dt, columnIndex) {
     }
 
     return dataset;
-}
+};
 
 DataTable.chart.redraw = function (dt) {
     for (var i = 0; i < dt._chart.columns.length; i++) {
         var col = dt._chart.columns[i];
         var dataset = makeColumnDataset( dt, col.idx );
-        updateChart( $(col.chart), col.sTitle, dataset );
+        var divElement = $(col.chart);
+        updateChart(divElement, col.sTitle, dataset, dt._chart.meta[col.chart]);
     }
-}
+};
 
 DataTable.chart.init = function (dt) {
     var ctx = dt.settings()[0];
-    var columns = ctx.aoColumns.filter(function (x) {return x.hasOwnProperty("chart")});
+    var columns = ctx.aoColumns.filter(function (x) {
+        return x.hasOwnProperty("chart");
+    });
 
     dt._chart = {};
     dt._chart.columns = columns;
+    dt._chart.meta = {};
     for (var i = 0; i < dt._chart.columns.length; i++) {
         var col = dt._chart.columns[i];
         var elem = $(col.chart);
 
-        prepareChartElement(elem);
+        // Maintain chart meta keyed by selector
+        dt._chart.meta[col.chart] = prepareChartElement(elem);
     }
 
-    dt.on( 'draw.dt', function () {
+    dt.on('draw.dt', function () {
         DataTable.chart.redraw( dt );
     });
-}
+};
 
 // TODO: Chart.js specific at present
-var updateChart = function(divElement, title, dataset) {
+var updateChart = function(divElement, title, dataset, meta) {
+
+    // Everything in here is chart.js specific, including workarounds...
+
+    // TODO: Brute force destroy of chart seems to be needed to properly clear state.
+    // It also seems to stop the animation happening.
+    if (meta.chartObj) {
+        meta.chartObj.clear();
+        meta.chartObj.destroy();
+        delete meta.chartObj;
+    }
+
     var elem = divElement.find(".chartCanvas")[0];
     var ctx = elem.getContext("2d");
+    elem.width = meta.width;
+    elem.height = meta.height;
     var chart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -107,20 +125,31 @@ var updateChart = function(divElement, title, dataset) {
             }
         }
     });
-}
+
+    // Redraw, and attach the new chart object
+    chart.update(true);
+    meta.chartObj = chart;
+};
 
 // TODO: Chart.js specific at present
 var prepareChartElement = function(elem) {
+    // Everything in here is chart.js specific, including workarounds...
+
     var canvas = $('<canvas/>', {class: "chartCanvas", width:"100%", height:"100%"});
     elem.append(canvas);
-}
+    return {
+        chartObj: null,
+        width: elem.width(),
+        height: elem.height()
+    };
+};
 
-$(document).on( 'preInit.dt.dtChart', function (e, ctx) {
+$(document).on('preInit.dt.dtChart', function (e, ctx) {
     if ( e.namespace !== 'dt' ) {
         return;
     }
 
-    DataTable.chart.init( new DataTable.Api( ctx ) );
+    DataTable.chart.init(new DataTable.Api(ctx));
 });
 
 
